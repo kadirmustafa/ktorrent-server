@@ -29,9 +29,28 @@ RUN chmod 777 /opt/utorrent-server-alpha-v3_3/
 RUN ln -s /opt/utorrent-server-alpha-v3_3/utserver /usr/bin/utserver
 COPY / /opt/utorrent-server-alpha-v3_3/
 
-EXPOSE 8080
+#Run  http-server
+ADD httpserver.sh /usr/local/bin/httpserver.sh
+RUN chmod 777 /usr/local/bin/httpserver.sh
 
-CMD /usr/bin/utserver -settingspath /opt/utorrent-server-alpha-v3_3/ -configfile /opt/utorrent-server-alpha-v3_3/utserver.conf -logfile /opt/utorrent-server-alpha-v3_3/utserver.log
+#Run  torrent-server
+ADD torrentserver.sh /usr/local/bin/torrentserver.sh
+RUN chmod 777 /usr/local/bin/torrentserver.sh
+
+
+EXPOSE 8080
+EXPOSE 8081
+
+WORKDIR /root
+
+CMD /usr/local/bin/torrentserver.sh && /usr/local/bin/httpserver.sh
+                    
+                    
+
+#CMD /usr/local/bin/shell.sh
+
+
+
 
 
 
